@@ -3,14 +3,8 @@ import "./styles.css";
 
 export default function App() {
   const [todoText, setTodoText] = useState("");
-  const [incompletTodos, setIncompleteTodos] = useState([
-    "aaaaaaa",
-    "fffffffff"
-  ]);
-  const [completeTodos, setCompleteTodos] = useState([
-    "ccccccc",
-    "ddddddddddd"
-  ]);
+  const [incompletTodos, setIncompleteTodos] = useState([]);
+  const [completeTodos, setCompleteTodos] = useState([]);
 
   const onChangeTodoText = (event) => setTodoText(event.target.value);
   const onClickAdd = () => {
@@ -31,6 +25,14 @@ export default function App() {
     const newCompleteTodos = [...completeTodos, incompletTodos[index]];
     setIncompleteTodos(newIncompleteTodos);
     setCompleteTodos(newCompleteTodos);
+  };
+  const onClickBack = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+
+    const newIncompleteTodos = [...incompletTodos, completeTodos[index]];
+    setCompleteTodos(newCompleteTodos);
+    setIncompleteTodos(newIncompleteTodos);
   };
   return (
     <>
@@ -59,12 +61,11 @@ export default function App() {
       <div className="complete-area">
         <p className="title">完了のTODO</p>
         <ul>
-          {completeTodos.map((todo) => {
+          {completeTodos.map((todo, index) => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>戻す</button>
-                <button onClick={() => onClickDelete(index)}>削除</button>
+                <button onClick={() => onClickBack(index)}>戻す</button>
               </div>
             );
           })}
