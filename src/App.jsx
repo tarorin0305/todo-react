@@ -19,6 +19,19 @@ export default function App() {
     setIncompleteTodos(newTodos);
     setTodoText("");
   };
+  const onClickDelete = (index) => {
+    const newTodos = [...incompletTodos];
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
+  };
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompletTodos];
+    newIncompleteTodos.splice(index, 1);
+
+    const newCompleteTodos = [...completeTodos, incompletTodos[index]];
+    setIncompleteTodos(newIncompleteTodos);
+    setCompleteTodos(newCompleteTodos);
+  };
   return (
     <>
       <div className="imput-area">
@@ -32,12 +45,12 @@ export default function App() {
       <div className="incomplete-area">
         <p className="title">未完了のTODO</p>
         <ul>
-          {incompletTodos.map((todo) => {
+          {incompletTodos.map((todo, index) => {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
-                <button>削除</button>
+                <button onClick={() => onClickComplete(index)}>完了</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
           })}
@@ -50,8 +63,8 @@ export default function App() {
             return (
               <div key={todo} className="list-row">
                 <li>{todo}</li>
-                <button>完了</button>
-                <button>削除</button>
+                <button>戻す</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
               </div>
             );
           })}
